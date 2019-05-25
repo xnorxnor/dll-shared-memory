@@ -22,13 +22,13 @@ void dll_func_with_param (std::string from_host)
 void InitSharedMemory()
 {
   sharedMemoryDllInstance.callBackFunctionFromHostToDll = CallBackFunctionFromHostToDll;
-  sharedMemoryDllInstance.stringsSharedByDllAndHost.reserve(100);
-  sharedMemoryDllInstance.stringsSharedByDllAndHost.resize(100);
+  //sharedMemoryDllInstance.stringsSharedByDllAndHost.reserve(100);
 }
 
 bool CallBackFunctionFromHostToDll()
 {
   std::cout << "This DLL function was called from Host" << "\n";
+  std::cout << "number of Elements in shared vector: [" << sharedMemoryDllInstance.stringsSharedByDllAndHost.size() << "]" << "\n";
   return true;
 }
 

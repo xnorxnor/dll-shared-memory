@@ -15,6 +15,6 @@ struct SharedMemory
   std::string inputFromDll;
   std::string inputFromHost;
   std::vector<std::string> stringsSharedByDllAndHost;
-  CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll;
+  CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll {nullptr};
 };
 #endif //DLL_TEST_SHARED_MEMORY_H
