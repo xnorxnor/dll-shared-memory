@@ -1,2 +1,8 @@
 /cmake-build-debug
 /.idea
+*.cbproj.local
+/__astcache
+/__history
+/__recovery
+/Win32
+*.res

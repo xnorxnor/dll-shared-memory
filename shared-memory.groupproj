@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{495DC4D7-FE9D-4F60-899C-5C099C74E27F}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="host-shared-memory.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dll-shared-memory.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="host-shared-memory">
+        <MSBuild Projects="host-shared-memory.cbproj"/>
+    </Target>
+    <Target Name="host-shared-memory:Clean">
+        <MSBuild Projects="host-shared-memory.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="host-shared-memory:Make">
+        <MSBuild Projects="host-shared-memory.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="dll-shared-memory">
+        <MSBuild Projects="dll-shared-memory.cbproj"/>
+    </Target>
+    <Target Name="dll-shared-memory:Clean">
+        <MSBuild Projects="dll-shared-memory.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dll-shared-memory:Make">
+        <MSBuild Projects="dll-shared-memory.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="host-shared-memory;dll-shared-memory"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="host-shared-memory:Clean;dll-shared-memory:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="host-shared-memory:Make;dll-shared-memory:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

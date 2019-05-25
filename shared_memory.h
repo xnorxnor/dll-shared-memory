@@ -8,10 +8,13 @@
 #include <string>
 #include <vector>
 
+typedef bool (*CallBackFunctionFromHostToDllPtr)();
+
 struct SharedMemory
 {
   std::string inputFromDll;
   std::string inputFromHost;
   std::vector<std::string> stringsSharedByDllAndHost;
+  CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll;
 };
 #endif //DLL_TEST_SHARED_MEMORY_H

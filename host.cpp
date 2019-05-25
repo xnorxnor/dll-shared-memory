@@ -17,7 +17,7 @@ int main()
 {
   std::cout << "Hello, World!" << std::endl;
 
-  HINSTANCE dllHandle = LoadLibrary("dll_test.dll");
+  HINSTANCE dllHandle = LoadLibrary("dll-shared-memory.dll");
 
   if (dllHandle == NULL)
   {
@@ -48,8 +48,10 @@ int main()
 
   getInstanceOfSharedMemory(sharedMemoryPtr);
 
-  sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
+  //sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
 //  std::this_thread::sleep_for(std::chrono::seconds(20));
+
+  sharedMemoryPtr->callBackFunctionFromHostToDll();
   FreeLibrary(dllHandle);
   return 0;
 }
