@@ -11,7 +11,13 @@
 #include "shared_memory.h"
 
 typedef void (WINAPI *dll_func_with_param)(std::string);
-typedef void (*GetInstanceOfSharedMemory)(SharedMemory*);
+typedef SharedMemory* (*GetInstanceOfSharedMemory)();
+
+#ifdef __BORLANDC__
+  const std::string funcPrefix = "_";
+#else
+  const std::string funcPrefix = "";
+#endif
 
 int main()
 {
@@ -27,8 +33,8 @@ int main()
 
   dll_func_with_param dllFuncWithParam;
   GetInstanceOfSharedMemory getInstanceOfSharedMemory;
-  dllFuncWithParam = (dll_func_with_param) GetProcAddress(dllHandle, "dll_func_with_param");
-  getInstanceOfSharedMemory = (GetInstanceOfSharedMemory) GetProcAddress(dllHandle, "GetInstanceOfSharedMemory");
+  dllFuncWithParam = (dll_func_with_param) GetProcAddress(dllHandle, (funcPrefix + "dll_func_with_param").c_str());
+  getInstanceOfSharedMemory = (GetInstanceOfSharedMemory) GetProcAddress(dllHandle, (funcPrefix + "GetInstanceOfSharedMemory").c_str());
 
   if (dllFuncWithParam == NULL)
   {
@@ -46,7 +52,7 @@ int main()
 
   SharedMemory* sharedMemoryPtr = nullptr;
 
-  getInstanceOfSharedMemory(sharedMemoryPtr);
+  sharedMemoryPtr = getInstanceOfSharedMemory();
 
   //sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
 //  std::this_thread::sleep_for(std::chrono::seconds(20));

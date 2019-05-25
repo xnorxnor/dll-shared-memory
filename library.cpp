@@ -32,9 +32,16 @@ bool CallBackFunctionFromHostToDll()
   return true;
 }
 
-void GetInstanceOfSharedMemory(SharedMemory* sharedMemory)
+/*
+void GetInstanceOfSharedMemory(SharedMemory** sharedMemory)
 {
-  sharedMemory = &sharedMemoryDllInstance;
+  *sharedMemory = &sharedMemoryDllInstance;
+}
+*/
+
+SharedMemory* GetInstanceOfSharedMemory(void)
+{
+  return &sharedMemoryDllInstance;
 }
 
 extern "C" BOOL APIENTRY DllMain(HMODULE /*module*/, DWORD reason, LPVOID /*reserved*/)
