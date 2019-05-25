@@ -125,11 +125,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="host.cpp" />
+    <ClCompile Include="..\src\host.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="host.h" />
-    <ClInclude Include="shared_memory.h" />
+    <ClInclude Include="..\src\host.h" />
+    <ClInclude Include="..\src\shared_memory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
