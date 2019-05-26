@@ -22,19 +22,21 @@ Tested with
 # Task and constraints in the context of a Bachelor thesis
 
 ## Constraints
+
 * Code must compile with bcc32c
 * Host and DLL run on the same machine
 * The minimum supported C++ standard is C++11
 
 ## Task
+
 * Which problems could arise by using the shared memory interface?
-** Is it possible to use different compilers for DLL and host?
-** What are possible alternatives to a shared memory interface?
+  * Is it possible to use different compilers for DLL and host?
+  * What are possible alternatives to a shared memory interface?
 * Find solutions that are C++ compiler independent (the host could be created with bcc32c and the DLL with mscvc)
 
 ## Optional tasks
 
 * Create a host in a different programming language (Python, Ruby, Java, etc.)
 * Allow data exchange over the network
-** of course this implies the use of two "host" - processes (in contrast to the original "host loads DLL" solution)
+  * of course this implies the use of two "host" - processes (in contrast to the original "host loads DLL" solution)
 
