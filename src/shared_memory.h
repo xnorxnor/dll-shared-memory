@@ -27,10 +27,10 @@ enum class LogLevel
 
 typedef bool (*CallBackFunctionFromHostToDllPtr)();
 
-typedef std::string (*RequestUserInputFromHost) ();
-typedef bool (*RequestDataFromDatabaseWithTimeout) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
-typedef void (*LogDataFromDll)(LogLevel logLevel, std::string& logEntry);
-typedef void (*SendProcessedDataToHost) (const std::vector<ProcessedData>& listOfProcessedDataItems);
+typedef std::string (*RequestUserInputFromHostPtr) ();
+typedef bool (*RequestDataFromDatabaseWithTimeoutPtr) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
+typedef void (*LogDataFromDllPtr)(LogLevel logLevel, std::string& logEntry);
+typedef void (*SendProcessedDataToHostPtr) (const std::vector<ProcessedData>& listOfProcessedDataItems);
 
 struct SharedMemory
 {
@@ -38,9 +38,9 @@ struct SharedMemory
   std::string inputFromHost;
   std::vector<std::string> stringsSharedByDllAndHost;
   CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll {nullptr};
-  RequestUserInputFromHost  requestUserInputFromHost {nullptr};
-  RequestDataFromDatabaseWithTimeout requestDataFromDatabaseWithTimeout {nullptr};
-  LogDataFromDll logDataFromDll {nullptr};
-  SendProcessedDataToHost sendProcessedDataToHost {nullptr};
+  RequestUserInputFromHostPtr  requestUserInputFromHost {nullptr};
+  RequestDataFromDatabaseWithTimeoutPtr requestDataFromDatabaseWithTimeout {nullptr};
+  LogDataFromDllPtr logDataFromDll {nullptr};
+  SendProcessedDataToHostPtr sendProcessedDataToHost {nullptr};
 };
 #endif //DLL_TEST_SHARED_MEMORY_H

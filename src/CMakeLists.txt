@@ -4,4 +4,4 @@ add_library(dll_test MODULE library.cpp library.h shared_memory.h)
 
 set_target_properties(dll_test PROPERTIES PREFIX "")
 set_target_properties(dll_test PROPERTIES OUTPUT_NAME "dll-shared-memory")
-add_executable(dll_host host.cpp shared_memory.h)
+add_executable(dll_host host.cpp shared_memory.h host_implementation.cpp)
