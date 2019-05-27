@@ -16,11 +16,11 @@ Note: this projects shows how *not* to do it. It is an abstract version of propi
 
 Tested with
 * CLion (CMake based, gcc)
- * .\CMakeLists.txt
+  * .\CMakeLists.txt
 * VS 2019 (Community Edition, msvc)
- * projectfiles\dll-shared-memory.sln
+  * projectfiles\dll-shared-memory.sln
 * C++ Builder 10.3 (Community Edition, bcc32c (clang based))
- * projectfiles\shared-memory.groupproj
+  * projectfiles\shared-memory.groupproj
 
 # Task and constraints in the context of a Bachelor thesis
 
