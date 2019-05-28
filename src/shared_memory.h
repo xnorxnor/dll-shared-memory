@@ -29,7 +29,7 @@ typedef bool (*CallBackFunctionFromHostToDllPtr)();
 
 typedef std::string (*RequestUserInputFromHostPtr) ();
 typedef bool (*RequestDataFromDatabaseWithTimeoutPtr) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
-typedef void (*LogDataFromDllPtr)(LogLevel logLevel, std::string& logEntry);
+typedef void (*LogDataFromDllPtr)(LogLevel logLevel, const std::string& logEntry);
 typedef void (*SendProcessedDataToHostPtr) (const std::vector<ProcessedData>& listOfProcessedDataItems);
 
 struct SharedMemory

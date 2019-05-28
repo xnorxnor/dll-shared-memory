@@ -2,13 +2,15 @@
 // Created by xnorxnor on 16.05.2019.
 //
 
+#include "host.h"
+#include "host_implementation.h"
+#include "shared_memory.h"
+
 #include <windows.h>
 #include <iostream>
 #include <string>
 #include <chrono>
 #include <thread>
-#include "host.h"
-#include "shared_memory.h"
 
 typedef void (WINAPI *dll_func_with_param)(std::string);
 typedef SharedMemory* (*GetInstanceOfSharedMemory)();
@@ -60,7 +62,10 @@ int main()
 
   sharedMemoryPtr = getInstanceOfSharedMemory();
 
+  sharedMemoryPtr->requestUserInputFromHost = &RequestUserInputFromHost;
+  sharedMemoryPtr->logDataFromDll = &LogDataFromDll;
   sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
+
 //  std::this_thread::sleep_for(std::chrono::seconds(20));
 
   sharedMemoryPtr->callBackFunctionFromHostToDll();

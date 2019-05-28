@@ -9,6 +9,7 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 
 /*
 typedef std::string (*RequestUserInputFromHost) ();
@@ -16,6 +17,26 @@ typedef bool (*RequestDataFromDatabaseWithTimeout) (const std::string &query, st
 typedef void (*LogDataFromDll)(LogLevel logLevel, std::string& logEntry);
 typedef void (*SendProcessedDataToHost) (const std::vector<ProcessedData>& listOfProcessedDataItems);
 */
+
+void LogDataFromDll(LogLevel logLevel, const std::string &logEntry)
+{
+  std::string prefix;
+
+  switch (logLevel)
+  {
+    case LogLevel::error:
+      prefix = "[error] ";
+      break;
+    case LogLevel::info:
+      prefix = "[info] ";
+      break;
+    case LogLevel::warning:
+      prefix = "[warn] ";
+      break;
+  }
+
+  std::cout << "host: " << prefix << logEntry << "\n";
+}
 
 std::string GenerateUserInputData()
 {
@@ -37,3 +58,4 @@ std::string RequestUserInputFromHost()
   // we generate some fake user input data here
   return GenerateUserInputData();
 }
+

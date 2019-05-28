@@ -1,8 +1,9 @@
+#include "library.h"
+#include "shared_memory.h"
+
 #include <windows.h>
 #include <iostream>
 #include <string>
-#include "library.h"
-#include "shared_memory.h"
 
 SharedMemory sharedMemoryDllInstance;
 
