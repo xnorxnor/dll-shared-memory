@@ -25,7 +25,7 @@ void ProcessResultData()
 
     resultAsString = result.dateTimeStamp + ", " + result.result + "(" + result.unit + ")";
 
-    std::cout << "Processed result [" << resultAsString << "]";
+    std::cout << "Processed result [" << resultAsString << "]\n";
   }
 }
 
@@ -37,13 +37,13 @@ void LogDataFromDll(LogLevel logLevel, const std::string &logEntry)
   switch (logLevel)
   {
     case LogLevel::error:
-      prefix = "[error] ";
+      prefix = " [error] ";
       break;
     case LogLevel::info:
-      prefix = "[info] ";
+      prefix = " [info] ";
       break;
     case LogLevel::warning:
-      prefix = "[warn] ";
+      prefix = " [warn] ";
       break;
   }
 

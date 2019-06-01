@@ -3,6 +3,7 @@
 
 #include "shared_memory.h"
 #include <string>
+#include <thread>
 
 void hello();
 bool CallBackFunctionFromHostToDll();
@@ -10,6 +11,9 @@ void InitSharedMemory();
 void StartDllDataProcessing();
 std::vector<ResultData> CreateProcessedData();
 void ResetResultData(std::vector<ResultData> listOfResults);
+void DllDataProcessingThread();
+
+std::thread t;
 
 #define DllExport extern "C" __declspec( dllexport )
 

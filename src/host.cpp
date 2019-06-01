@@ -70,6 +70,12 @@ int main()
 //  std::this_thread::sleep_for(std::chrono::seconds(20));
 
   sharedMemoryPtr->callBackFunctionFromHostToDll();
+  sharedMemoryPtr->startDllDataProcessing();
+
+  std::this_thread::sleep_for(std::chrono::seconds(10));
+  sharedMemoryPtr->allowShutdown.store(true);
+
+  std::this_thread::sleep_for(std::chrono::seconds(5));
   FreeLibrary(dllHandle);
   return 0;
 }

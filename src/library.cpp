@@ -39,6 +39,11 @@ bool CallBackFunctionFromHostToDll()
 // and functions would be called after certain events are triggered
 void StartDllDataProcessing()
 {
+  t = std::move(std::thread([=]() {DllDataProcessingThread(); return 1; }));
+}
+
+void DllDataProcessingThread()
+{
   sharedMemoryDllInstance.logDataFromDll(LogLevel::info, "Starting data processing");
 
   while (sharedMemoryDllInstance.allowShutdown.load() == false)
@@ -56,7 +61,6 @@ void StartDllDataProcessing()
 
   sharedMemoryDllInstance.logDataFromDll(LogLevel::info, "Processing complete, shutting down");
 }
-
 
 std::vector<ResultData> CreateProcessedData()
 {
@@ -99,6 +103,7 @@ extern "C" BOOL APIENTRY DllMain(HMODULE /*module*/, DWORD reason, LPVOID /*rese
   if (reason == DLL_PROCESS_DETACH)
   {
     // clean up
+    t.join();
   }
   return true;
 }
