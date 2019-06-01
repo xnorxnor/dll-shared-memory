@@ -15,6 +15,7 @@
 typedef void (WINAPI *dll_func_with_param)(std::string);
 typedef SharedMemory* (*GetInstanceOfSharedMemory)();
 
+
 // when using the bcc32c compiler it does not seem possible to remove the _ prefix from export names
 // other compilers (gcc, msvc) just create the nice export names
 #ifdef __BORLANDC__
@@ -58,12 +59,12 @@ int main()
 
   dllFuncWithParam("value from host");
 
-  SharedMemory* sharedMemoryPtr = nullptr;
 
   sharedMemoryPtr = getInstanceOfSharedMemory();
 
   sharedMemoryPtr->requestUserInputFromHost = &RequestUserInputFromHost;
   sharedMemoryPtr->logDataFromDll = &LogDataFromDll;
+  sharedMemoryPtr->processResultData = &ProcessResultData;
   sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
 
 //  std::this_thread::sleep_for(std::chrono::seconds(20));

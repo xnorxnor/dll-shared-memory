@@ -2,6 +2,7 @@
 // Created by xnorxnor on 27.05.2019.
 //
 
+#include "host_implementation.h"
 #include "shared_memory.h"
 #include <string>
 #include <vector>
@@ -11,12 +12,23 @@
 #include <sstream>
 #include <iostream>
 
-/*
-typedef std::string (*RequestUserInputFromHost) ();
-typedef bool (*RequestDataFromDatabaseWithTimeout) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
-typedef void (*LogDataFromDll)(LogLevel logLevel, std::string& logEntry);
-typedef void (*SendProcessedDataToHost) (const std::vector<ProcessedData>& listOfProcessedDataItems);
-*/
+SharedMemory* sharedMemoryPtr = nullptr;
+
+
+void ProcessResultData()
+{
+  std::lock_guard<std::mutex> guard(sharedMemoryPtr->lockResultData);
+
+  for (auto &result : sharedMemoryPtr->listOfResults)
+  {
+    std::string resultAsString;
+
+    resultAsString = result.dateTimeStamp + ", " + result.result + "(" + result.unit + ")";
+
+    std::cout << "Processed result [" << resultAsString << "]";
+  }
+}
+
 
 void LogDataFromDll(LogLevel logLevel, const std::string &logEntry)
 {
@@ -35,21 +47,23 @@ void LogDataFromDll(LogLevel logLevel, const std::string &logEntry)
       break;
   }
 
-  std::cout << "host: " << prefix << logEntry << "\n";
+  std::cout << "Log: " << GenerateTimeStamp() << prefix << logEntry << "\n";
 }
 
 std::string GenerateUserInputData()
 {
-  std::string userInput;
+  return "user input: [ " + GenerateTimeStamp() + "]";
+}
 
-  auto t = std::time(nullptr);
-  auto tm = *std::localtime(&t);
+std::string GenerateTimeStamp()
+{
+  auto t = time(nullptr);
+  auto tm = *localtime(&t);
 
   std::ostringstream oss;
-  oss << "user input [" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "]";
-  userInput = oss.str();
+  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
 
-  return userInput;
+  return oss.str();
 }
 
 std::string RequestUserInputFromHost()

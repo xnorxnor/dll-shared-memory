@@ -8,9 +8,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <mutex>
+#include <atomic>
 
 // simple struct with "processed" data, produced by the DLL
-struct ProcessedData
+struct ResultData
 {
   std::string result;
   std::string unit;
@@ -30,17 +32,23 @@ typedef bool (*CallBackFunctionFromHostToDllPtr)();
 typedef std::string (*RequestUserInputFromHostPtr) ();
 typedef bool (*RequestDataFromDatabaseWithTimeoutPtr) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
 typedef void (*LogDataFromDllPtr)(LogLevel logLevel, const std::string& logEntry);
-typedef void (*SendProcessedDataToHostPtr) (const std::vector<ProcessedData>& listOfProcessedDataItems);
+typedef void (*ProcessResultDataPtr) ();
+typedef void (*StartDllDataProcessingPtr)();
 
 struct SharedMemory
 {
   std::string inputFromDll;
   std::string inputFromHost;
   std::vector<std::string> stringsSharedByDllAndHost;
+  std::vector<ResultData> listOfResults;
+
   CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll {nullptr};
   RequestUserInputFromHostPtr  requestUserInputFromHost {nullptr};
   RequestDataFromDatabaseWithTimeoutPtr requestDataFromDatabaseWithTimeout {nullptr};
   LogDataFromDllPtr logDataFromDll {nullptr};
-  SendProcessedDataToHostPtr sendProcessedDataToHost {nullptr};
+  ProcessResultDataPtr processResultData {nullptr};
+  StartDllDataProcessingPtr startDllDataProcessing {nullptr};
+  std::mutex lockResultData;
+  std::atomic<bool> allowShutdown {false};
 };
 #endif //DLL_TEST_SHARED_MEMORY_H

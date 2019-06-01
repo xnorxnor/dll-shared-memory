@@ -7,6 +7,9 @@
 void hello();
 bool CallBackFunctionFromHostToDll();
 void InitSharedMemory();
+void StartDllDataProcessing();
+std::vector<ResultData> CreateProcessedData();
+void ResetResultData(std::vector<ResultData> listOfResults);
 
 #define DllExport extern "C" __declspec( dllexport )
 
