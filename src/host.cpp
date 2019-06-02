@@ -63,5 +63,9 @@ int main()
   std::this_thread::sleep_for(std::chrono::seconds(5));
 
   FreeLibrary(dllHandle);
+
+  std::cout << "Press any key to finish" << "\n";
+  std::cin.get();
+
   return 0;
 }
