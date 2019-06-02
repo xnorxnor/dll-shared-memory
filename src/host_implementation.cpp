@@ -56,6 +56,7 @@ bool RequestDataFromDatabaseWithTimeout (const std::string &query)
 
   std::cout << "Starting DB query for query [" << query << "]" << "\n";
 
+  // Start the database function in a background thread, wait x seconds for it to return
   std::packaged_task<void(std::string )> task(GetDatabaseContent);
   auto future = task.get_future();
   std::thread thr(std::move(task), query);

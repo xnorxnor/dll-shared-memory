@@ -44,7 +44,7 @@ struct SharedMemory
 
   std::mutex lockDataBaseTable;
   std::map<std::string, std::vector<std::string>> dataBaseTable;
-  unsigned int maximumSecondsToWaitForDataBase {10};
+  unsigned int maximumSecondsToWaitForDataBase {5};
 
   CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll {nullptr};
   RequestUserInputFromHostPtr  requestUserInputFromHost {nullptr};
