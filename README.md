@@ -1,7 +1,9 @@
 # dll-shared-memory
 Simple project to show possible problems when using shared memory structures between DLL and DLL host.
 
-Note: this projects shows how *not* to do it. It is an abstract version of propietary code and is intended to serve as an example of how interprocess communication between a DLL and a host should better not be designed. The task derived from this is to create the same functionality with modern means.
+Note: this projects shows how *not* to do it. It is an abstract version of propietary code and is intended to serve as an example of how interprocess communication between a DLL and a host should better not be designed. The task derived from this is to create the same functionality with modern means. 
+
+For the sake of simplicity no threads are used.
 
 # Features
 
