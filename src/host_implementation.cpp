@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <sstream>
 #include <iostream>
+#include <time.h>
 
 SharedMemory* sharedMemoryPtr = nullptr;
 
@@ -58,10 +59,14 @@ std::string GenerateUserInputData()
 std::string GenerateTimeStamp()
 {
   auto t = time(nullptr);
-  auto tm = *localtime(&t);
-
+  #ifdef _MSC_VER
+    struct tm buf;
+    localtime_s(&buf, &t);
+  #else
+   auto buf = *localtime(&t);
+  #endif
   std::ostringstream oss;
-  oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+  oss << std::put_time(&buf, "%Y-%m-%d %H:%M:%S");
 
   return oss.str();
 }
