@@ -9,6 +9,7 @@
 #include <string>
 
 extern SharedMemory* sharedMemoryPtr;
+extern bool runIntoTimeoutOnDbQuery;
 
 void LogDataFromDll(LogLevel logLevel, const std::string& logEntry);
 std::string GenerateTimeStamp();
@@ -16,5 +17,6 @@ std::string GenerateUserInputData();
 std::string RequestUserInputFromHost();
 void ProcessResultData();
 std::string GenerateTimeStamp();
+bool RequestDataFromDatabaseWithTimeout (const std::string &query);
 
 #endif //DLL_TEST_HOST_IMPLEMENTATION_H

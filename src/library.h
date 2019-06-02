@@ -11,6 +11,7 @@ void StartDllDataProcessing();
 std::vector<ResultData> CreateProcessedData();
 void ResetResultData(std::vector<ResultData> listOfResults);
 void DllDataProcessingThread();
+void HandleDbData(bool querySuccessful, const std::map<std::string, std::vector<std::string>> &dataBaseTable);
 
 std::thread dllMainThread;
 

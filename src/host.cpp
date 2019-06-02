@@ -51,6 +51,7 @@ int main()
   sharedMemoryPtr->requestUserInputFromHost = &RequestUserInputFromHost;
   sharedMemoryPtr->logDataFromDll = &LogDataFromDll;
   sharedMemoryPtr->processResultData = &ProcessResultData;
+  sharedMemoryPtr->requestDataFromDatabaseWithTimeout = RequestDataFromDatabaseWithTimeout;
   sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
 
   // Start the DLL thread
@@ -64,7 +65,7 @@ int main()
 
   FreeLibrary(dllHandle);
 
-  std::cout << "Press any key to finish" << "\n";
+  std::cout << "Press Enter to finish" << "\n";
   std::cin.get();
 
   return 0;

@@ -47,10 +47,38 @@ void DllDataProcessingThread()
     ResetResultData(CreateProcessedData());
     sharedMemoryDllInstance.processResultData();
 
+    sharedMemoryDllInstance.logDataFromDll(LogLevel::info, sharedMemoryDllInstance.requestUserInputFromHost());
+
+    bool querySuccessful = sharedMemoryDllInstance.requestDataFromDatabaseWithTimeout("select * from orders;");
+
+    HandleDbData(querySuccessful, sharedMemoryDllInstance.dataBaseTable);
 
   }
 
   sharedMemoryDllInstance.logDataFromDll(LogLevel::info, "Processing complete, shutting down");
+}
+
+
+void HandleDbData(bool querySuccessful, const std::map<std::string, std::vector<std::string>> &dataBaseTable)
+{
+  std::lock_guard<std::mutex> guard(sharedMemoryDllInstance.lockDataBaseTable);
+
+  if (querySuccessful)
+  {
+    // parse db data here
+    for (auto &row : sharedMemoryDllInstance.dataBaseTable)
+    {
+      std::string columnContent;
+      for (auto &columnElement : row.second)
+        columnContent += columnElement + ",";
+
+      sharedMemoryDllInstance.logDataFromDll(LogLevel::info, columnContent);
+    }
+  }
+  else
+  {
+    sharedMemoryDllInstance.logDataFromDll(LogLevel::error, "Timeout for last DB query!");
+  }
 }
 
 // Create dummy data to be processed by the host

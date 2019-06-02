@@ -30,7 +30,7 @@ enum class LogLevel
 typedef bool (*CallBackFunctionFromHostToDllPtr)();
 
 typedef std::string (*RequestUserInputFromHostPtr) ();
-typedef bool (*RequestDataFromDatabaseWithTimeoutPtr) (const std::string &query, std::map<std::string, std::vector<std::string>> &dataBaseTable, unsigned int maximumSecondsToWait);
+typedef bool (*RequestDataFromDatabaseWithTimeoutPtr) (const std::string &query);
 typedef void (*LogDataFromDllPtr)(LogLevel logLevel, const std::string& logEntry);
 typedef void (*ProcessResultDataPtr) ();
 typedef void (*StartDllDataProcessingPtr)();
@@ -41,6 +41,10 @@ struct SharedMemory
   std::string inputFromHost;
   std::vector<std::string> stringsSharedByDllAndHost;
   std::vector<ResultData> listOfResults;
+
+  std::mutex lockDataBaseTable;
+  std::map<std::string, std::vector<std::string>> dataBaseTable;
+  unsigned int maximumSecondsToWaitForDataBase {10};
 
   CallBackFunctionFromHostToDllPtr callBackFunctionFromHostToDll {nullptr};
   RequestUserInputFromHostPtr  requestUserInputFromHost {nullptr};
