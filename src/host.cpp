@@ -12,8 +12,6 @@
 #include <chrono>
 #include <thread>
 
-typedef void (WINAPI *dll_func_with_param)(std::string);
-typedef SharedMemory* (*GetInstanceOfSharedMemory)();
 
 
 // when using the bcc32c compiler it does not seem possible to remove the _ prefix from export names
@@ -24,42 +22,30 @@ typedef SharedMemory* (*GetInstanceOfSharedMemory)();
   const std::string funcPrefix = "";
 #endif
 
-// TODO: general function to wrap calls to GetProcAddress()
-//  TODO: map of function handles and corresponding names
-// TODO: Error Handler
 
 int main()
 {
-  std::cout << "Hello, World!" << std::endl;
+  std::cout << "Host starting up, loading DLL" << "\n";
 
   HINSTANCE dllHandle = LoadLibrary("dll-shared-memory.dll");
 
   if (dllHandle == NULL)
   {
-    std::cerr << "Loading of Library failed!";
+    std::cerr << "Loading of Library failed!" << "\n";
     return 1;
   }
 
-  dll_func_with_param dllFuncWithParam;
   GetInstanceOfSharedMemory getInstanceOfSharedMemory;
-  dllFuncWithParam = (dll_func_with_param) GetProcAddress(dllHandle, (funcPrefix + "dll_func_with_param").c_str());
   getInstanceOfSharedMemory = (GetInstanceOfSharedMemory) GetProcAddress(dllHandle, (funcPrefix + "GetInstanceOfSharedMemory").c_str());
-
-  if (dllFuncWithParam == NULL)
-  {
-    std::cerr << "Can't get proc address" << "\n";
-    return 2;
-  }
 
   if (getInstanceOfSharedMemory == NULL)
   {
     std::cerr << "Can't get proc adress of \"GetInstanceOfSharedMemory\"" << "\n";
-    return 3;
+    return 2;
   }
 
-  dllFuncWithParam("value from host");
 
-
+  // Init shared memory function pointers
   sharedMemoryPtr = getInstanceOfSharedMemory();
 
   sharedMemoryPtr->requestUserInputFromHost = &RequestUserInputFromHost;
@@ -67,15 +53,15 @@ int main()
   sharedMemoryPtr->processResultData = &ProcessResultData;
   sharedMemoryPtr->stringsSharedByDllAndHost.push_back("string from host");
 
-//  std::this_thread::sleep_for(std::chrono::seconds(20));
-
-  sharedMemoryPtr->callBackFunctionFromHostToDll();
+  // Start the DLL thread
   sharedMemoryPtr->startDllDataProcessing();
 
   std::this_thread::sleep_for(std::chrono::seconds(10));
+
   sharedMemoryPtr->allowShutdown.store(true);
 
   std::this_thread::sleep_for(std::chrono::seconds(5));
+
   FreeLibrary(dllHandle);
   return 0;
 }

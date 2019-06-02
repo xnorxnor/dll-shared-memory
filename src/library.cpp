@@ -11,21 +11,10 @@
 SharedMemory sharedMemoryDllInstance;
 
 
-void hello()
-{
-  std::cout << "Hello from DLL" << "\n";
-}
-
-void dll_func_with_param (std::string from_host)
-{
-  std::cout << "string from host: " << from_host << "\n";
-}
-
 void InitSharedMemory()
 {
   sharedMemoryDllInstance.callBackFunctionFromHostToDll = CallBackFunctionFromHostToDll;
   sharedMemoryDllInstance.startDllDataProcessing = StartDllDataProcessing;
-  //sharedMemoryDllInstance.stringsSharedByDllAndHost.reserve(100);
 }
 
 bool CallBackFunctionFromHostToDll()
@@ -35,13 +24,15 @@ bool CallBackFunctionFromHostToDll()
   return true;
 }
 
-// This is the main function, normally this would run in an extra thread
-// and functions would be called after certain events are triggered
+// This is the main function, normally several threads would be started here
+// For the sake of simpplicity we only start one thread in the background
+// the thraad is joined later when the DLL is unloaded
 void StartDllDataProcessing()
 {
-  t = std::move(std::thread([=]() {DllDataProcessingThread(); return 1; }));
+  dllMainThread = std::move(std::thread([=]() {DllDataProcessingThread(); return 1; }));
 }
 
+// Main thread for the dll that runs endlessly until the atomic variable is set accordingly
 void DllDataProcessingThread()
 {
   sharedMemoryDllInstance.logDataFromDll(LogLevel::info, "Starting data processing");
@@ -62,6 +53,7 @@ void DllDataProcessingThread()
   sharedMemoryDllInstance.logDataFromDll(LogLevel::info, "Processing complete, shutting down");
 }
 
+// Create dummy data to be processed by the host
 std::vector<ResultData> CreateProcessedData()
 {
   std::vector<ResultData> listOfData;
@@ -81,12 +73,14 @@ std::vector<ResultData> CreateProcessedData()
   return listOfData;
 }
 
+// Clear vector of ResultData items and lock the access during the operation
 void ResetResultData(std::vector<ResultData> listOfResults)
 {
   std::lock_guard<std::mutex> guard(sharedMemoryDllInstance.lockResultData);
   sharedMemoryDllInstance.listOfResults = listOfResults;
 }
 
+// Let the host retrieve the address of the SharedMemory instance
 SharedMemory* GetInstanceOfSharedMemory(void)
 {
   return &sharedMemoryDllInstance;
@@ -102,8 +96,7 @@ extern "C" BOOL APIENTRY DllMain(HMODULE /*module*/, DWORD reason, LPVOID /*rese
 
   if (reason == DLL_PROCESS_DETACH)
   {
-    // clean up
-    t.join();
+    dllMainThread.join();
   }
   return true;
 }
